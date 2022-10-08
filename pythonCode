@@ -1,0 +1,74 @@
+# you can write here any article you want :
+article_text = "Processing and Analysis Tools and Techniques Big data processing is a set of techniques or programming models to access large-scale data to extract useful information for supporting and providing decisions. In the following, we review some tools and techniques, which are available for big data analysis in datacenters.As mentioned in previous section, big data usually stored in thousands of commodity servers so traditional programming models such as message passing interface (MPI) [40] cannot handle them effectively. Therefore, new parallel programming models are utilized to improve the performance of NoSQL databases in datacenters. MapReduce [17] is one of the most popular programming models for big data processing using large-scale commodity clusters. MapReduce is proposed by Google and developed by Yahoo. Map and Reduce functions are programmed by users to process the big data distributed across multiple heterogeneous nodes. The main advantage of this programming model is simplicity, so users can easily utilize that for big data processing. A certain set of wrappers is being developed for MapReduce. These wrappers can provide a better control over the MapReduce code and aid in the source code development. Apache Pig is a structured query language (SQL)-like environment developed at Yahoo [41] is being used by many organizations like Yahoo, Twitter, AOL, LinkedIn, etc. Hive is another MapReduce wrapper developed by Facebook. These two wrappers provide a better environment and make the code development simpler since the programmers do not have to deal with the complexities of MapReduce coding.Hadoop is the open-source implementation of MapReduce and is widely used for big data processing. This software is even available through some Cloud providers such as Amazon EMR to create Hadoop clusters to process big data using Amazon EC2 resources. Hadoop adopts the HDFS file system, which is explained in previous section. By using this file system, data will be located close to the processing node to minimize the communication overhead. Windows Azure also uses a MapReduce runtime called Daytona [46], which utilized Azure's Cloud infrastructure as the scalable storage system for data processing.There are several new implementations of Hadoop to overcome its performance issues such as slowness to load data and the lack of reuse of data [47,48]. For instance, Starfish [47] is a Hadoop-based framework, which aimed to improve the performance of MapReduce jobs using data lifecycle in analytics. It also uses job profiling and workflow optimization to reduce the impact of unbalance data during the job execution. Starfish is a self-tuning system based on user requirements and system workloads without any need from users to configure or change the settings or parameters. Moreover, Starfish's Elastisizer can automate the decision making for creating optimized Hadoop clusters using a mix of simulation and model-based estimation to find the best answers for what-if questions about workload performance."
+
+
+# import necessary modules :
+import re
+import nltk
+nltk.download('punkt')
+
+
+# Preprocessing :
+article_text = article_text.lower()
+article_text
+
+
+# remove spaces, puncutations and numbers :
+clean_text = re.sub('[^a-zA-Z]',' ',article_text)
+clean_text = re.sub('\s+',' ',clean_text)
+clean_text
+
+
+# split into sentences list
+sentence_list = nltk = nltk.sent_tokenize(article_text)
+sentence_list
+
+
+# once you run the coming code must run this :
+import nltk
+nltk.download('stopwords') 
+
+stopwords = nltk.corpus.stopwords.words('english')
+
+
+word_frequencies = {}
+for word in nltk.word_tokenize(clean_text):
+    if word not in stopwords:
+        if word not in word_frequencies:
+            word_frequencies[word] = 1
+        else:
+            word_frequencies[word] += 1
+            
+            
+word_frequencies
+
+
+maximum_frequncy = max(word_frequencies.values())
+for word in word_frequencies:
+    word_frequencies[word] = word_frequencies[word] / maximum_frequncy
+Calculate sentences scores
+sentences_scores
+sentences_scores ={}
+
+
+
+
+for sentence in sentence_list:
+    for word in nltk.word_tokenize(sentence.lower()):
+        if word in word_frequencies and len(sentence.split(' ')) < 30:
+            if sentence not in sentences_scores:
+                sentences_scores[sentence]= word_frequencies[word]
+            else:
+                sentences_scores[sentence] += word_frequencies[word]
+
+
+# to show the words frequencies : 
+# word_frequencies
+# sentences_scores
+
+
+
+# to get top 5 sentences and can be changed :
+import heapq
+summary = heapq.nlargest(5, sentences_scores , key=sentences_scores.get)
+print(" ".join(summary))
